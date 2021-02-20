@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: solr-pv0
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  azureFile:
+    secretName: solr-storage-volume-key
+    shareName: solrstorage
+    readOnly: false
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=1000
+    - gid=1000
+    - mfsymlinks
+    - nobrl
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: solr-pv1
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  azureFile:
+    secretName: solr-storage-volume-key
+    shareName: solrstorage
+    readOnly: false
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=1000
+    - gid=1000
+    - mfsymlinks
+    - nobrl
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: solr-pv2
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  azureFile:
+    secretName: solr-storage-volume-key
+    shareName: solrstorage
+    readOnly: false
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=1000
+    - gid=1000
+    - mfsymlinks
+    - nobrl
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: solr-storage-solr-0
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 20Gi
+  volumeName: solr-pv0
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: solr-storage-solr-1
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 20Gi
+  volumeName: solr-pv1
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: solr-storage-solr-2
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 20Gi
+  volumeName: solr-pv2
