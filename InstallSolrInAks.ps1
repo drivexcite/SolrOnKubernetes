@@ -1,4 +1,4 @@
-$mainSubscription = '065b0ab4-5905-4ce8-bada-275c71fe7696'
+$mainSubscription = '6152dde1-b5ce-41f3-9a19-ff98dff9bb63'
 $resourceGroup = 'MySolrGroup'
 $clusterName = 'MySolrCluster'
 
@@ -7,7 +7,7 @@ az login
 az account set --subscription $mainSubscription
 
 # Create resource group
-az group create --name $resourceGroup --location westus
+az group create --name $resourceGroup --location westus2
 
 # Create cluster
 az aks create --resource-group $resourceGroup --name $clusterName --node-vm-size Standard_B2ms --generate-ssh-keys --node-count 2 --enable-managed-identity
@@ -46,7 +46,7 @@ kubectl apply -f .\solr.yaml
 # kubectl exec -i -t $solrPod -- /bin/bash
 
 # Figure out the public IP of the Solr Ingress controller and launch it in a browser
-$publicIp = kubectl get service --output=json -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}'
+$publicIp = kubectl get service -n istio-system --output=json -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}'
 $solrAddress = 'http://' + $publicIp + '/solr/#/~cloud'
 start $solrAddress
 
@@ -54,4 +54,5 @@ start $solrAddress
 kubectl rollout restart StatefulSet solr
 
 # From any solr node
-./server/scripts/cloud-scripts/zkcli.sh -zkhost solr-zookeeper-0.solr-zookeeper-headless.default.svc.cluster.local:2181 -cmd clusterprop -name legacyCloud -val true
+#./server/scripts/cloud-scripts/zkcli.sh -zkhost solr-zookeeper-0.solr-zookeeper-headless.default.svc.cluster.local:2181 -cmd clusterprop -name legacyCloud -val true
+#./server/scripts/cloud-scripts/zkcli.sh -zkhost solr-zookeeper-0.solr-zookeeper-headless.default.svc.cluster.local:2181 -cmd putfile /security.json /opt/solr/server/home/security.json
